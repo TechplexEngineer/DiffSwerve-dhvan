@@ -27,7 +27,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.bionic.UserInterfaceElement;
 import frc.bionic.swerve.AbstractDrivetrain;
 import frc.bionic.swerve.command.DriveWithJoystick;
-import frc.robot.subsystems.indexer.IndexerSubsystem;
 
 @SuppressWarnings( { "rawtypes", "unchecked" })
 public class UserInterface
@@ -37,7 +36,6 @@ public class UserInterface
   private static Joystick joystick0;
   private static XboxController gamepad1;
 
-  private static IndexerSubsystem indexerSubsystem;
   private static AbstractDrivetrain drivetrain;
 
 
@@ -91,22 +89,9 @@ public class UserInterface
    */
   public static void createUIGamepad1(){
     gamepad1 = new XboxController(1);
-    UserInterfaceElement<IndexerSubsystem> indexerElement = objectRegistry.get("Indexer");
-    indexerSubsystem = indexerElement.get();
   }
 
   public static void periodic(){
-    // Checks to see if Right Trigger is pressed
-    if(Math.abs(gamepad1.getTriggerAxis(Hand.kRight)) > 0.01){
-      // Runs the indexer at full speed forward
-      new InstantCommand(indexerSubsystem::runIndexer, indexerSubsystem).schedule();
-    } else if(Math.abs(gamepad1.getTriggerAxis(Hand.kLeft)) > 0.01){
-      // Runs the indexer at full speed backward
-      new InstantCommand(indexerSubsystem::reverseIndexer, indexerSubsystem).schedule();
-    } else {
-      // If nothing is being pressed do not run indexer
-      new InstantCommand(indexerSubsystem::stopIndexer, indexerSubsystem).schedule();
-    }
   }
 
 
