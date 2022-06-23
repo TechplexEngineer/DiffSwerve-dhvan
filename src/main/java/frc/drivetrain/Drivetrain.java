@@ -22,6 +22,8 @@ public class Drivetrain extends SubsystemBase{
 
     private ChassisSpeeds m_chassisSpeeds;
 
+    private static Drivetrain m_instance;
+
     private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
             // Front left
             new Translation2d(DrivetrainConstants.TRACKWIDTH_METERS / 2.0, DrivetrainConstants.WHEELBASE_METERS / 2.0),
@@ -59,6 +61,10 @@ public class Drivetrain extends SubsystemBase{
         );
     }
 
+    public void drive(ChassisSpeeds chassisSpeeds){
+        m_chassisSpeeds = chassisSpeeds;
+    }
+
     private void actuateModules(SwerveModuleState[] states){
         frontLeftModule.setModuleState(states[0]);
         frontRightModule.setModuleState(states[1]);
@@ -68,5 +74,13 @@ public class Drivetrain extends SubsystemBase{
 
     public void zeroGyroscope(){
         m_pigeon.setFusedHeading(0);
+    }
+
+    public static Drivetrain getInstance(){
+        return m_instance == null ? new Drivetrain() : m_instance;
+    }
+
+    public Rotation2d getGyroscopeRotation() {
+        return Rotation2d.fromDegrees(m_pigeon.getFusedHeading());
     }
 }

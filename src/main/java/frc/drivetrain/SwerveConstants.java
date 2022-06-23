@@ -43,6 +43,7 @@ public class SwerveConstants {
         public static final double GEAR_RATIO_WHEEL_SPEED = (13.0 / 82.0) * (45.0 / 15.0) * (28.0 / 36.0);
 
         public static final double WHEEL_DIAMETER_METERS = Conversion.inchesToMeters(3d);
+        
     }
 
     public static class MotorConstants{

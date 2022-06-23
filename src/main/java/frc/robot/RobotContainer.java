@@ -8,6 +8,13 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.Button;
+import frc.drivetrain.Drive;
+import frc.drivetrain.Drivetrain;
+import frc.drivetrain.SwerveConstants;
+import frc.drivetrain.SwerveConstants.DrivetrainConstants;
+import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.subsystems.DrivetrainSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -16,10 +23,29 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-    // The robot's subsystems and commands are defined here:
+// The robot's subsystems and commands are defined here...
+private final Drivetrain m_drivetrain = Drivetrain.getInstance();
 
-    /** The container for the robot. Contains subsystems, OI devices, and commands. */
-    public RobotContainer() {
+private final XboxController m_controller = new XboxController(0);
+
+/**
+ * The container for the robot. Contains subsystems, OI devices, and commands.
+ */
+public RobotContainer() {
+        /**
+         * Set up the default command for the drivetrain.
+         * The controls are for field-oriented driving:
+         * Left stick Y axis -> forward and backwards movement
+         * Left stick X axis -> left and right movement
+         * Right stick X axis -> rotation
+         */
+        m_drivetrain.setDefaultCommand(new Drive(
+                m_drivetrain,
+                () -> -modifyAxis(m_controller.getLeftY()) * DrivetrainConstants.MAX_VELOCITY_METERS_PER_SECOND,
+                () -> -modifyAxis(m_controller.getLeftX()) * DrivetrainConstants.MAX_VELOCITY_METERS_PER_SECOND,
+                () -> -modifyAxis(m_controller.getRightX()) * 1
+        ));
+
         // Configure the button bindings
         configureButtonBindings();
     }
@@ -31,7 +57,10 @@ public class RobotContainer {
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
-        
+    // Back button zeros the gyroscope
+    new Button(m_controller::getBackButton)
+            // No requirements because we don't need to interrupt anything
+            .whenPressed(m_drivetrainSubsystem::zeroGyroscope);
     }
 
     /**
@@ -40,7 +69,29 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        // An Empty command will run in autonomous
-        return new InstantCommand();
+    // An ExampleCommand will run in autonomous
+    return new InstantCommand();
+    }
+
+    private static double deadband(double value, double deadband) {
+    if (Math.abs(value) > deadband) {
+        if (value > 0.0) {
+        return (value - deadband) / (1.0 - deadband);
+        } else {
+        return (value + deadband) / (1.0 - deadband);
+        }
+    } else {
+        return 0.0;
+    }
+    }
+
+    private static double modifyAxis(double value) {
+    // Deadband
+    value = deadband(value, 0.05);
+
+    // Square the axis
+    value = Math.copySign(value * value, value);
+
+    return value;
     }
 }
