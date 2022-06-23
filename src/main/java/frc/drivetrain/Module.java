@@ -6,8 +6,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import frc.bionic.Conversion;
-import frc.drivetrain.Constants.ModuleConstants;
-import frc.drivetrain.Constants.MotorConstants;
+import frc.drivetrain.SwerveConstants.ModuleConstants;
+import frc.drivetrain.SwerveConstants.MotorConstants;
 
 public class Module {
     private static Module m_instance;
@@ -17,7 +17,7 @@ public class Module {
 
     private static PIDController m_yawPID;
 
-    private Module(int motorA, int motorB, int encoder, ModuleType type){
+    public Module(int motorA, int motorB, int encoder, ModuleType type){
         m_motorA = new TalonFX(motorA);
         m_motorB = new TalonFX(motorB);
         m_yawEncoder = new RevHexEncoder(encoder);
@@ -50,11 +50,7 @@ public class Module {
 
     }
     
-    public static Module getInstance(int motorA, int motorB, int encoder, ModuleType type){
-        return m_instance = m_instance == null ? new Module(motorA, motorB, encoder, type) : m_instance;
-    }
-
-    public static Module getInstance() throws Exception{
+    public  Module getInstance() throws Exception{
         if(m_instance == null) throw new NullPointerException("Drivetrain instance does not exist");
         else return m_instance;
     }

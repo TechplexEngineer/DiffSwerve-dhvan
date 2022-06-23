@@ -3,7 +3,7 @@ package frc.drivetrain;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.LinearFilter;
 import edu.wpi.first.wpilibj.controller.PIDController;
-import frc.drivetrain.Constants.ModuleConstants;
+import frc.drivetrain.SwerveConstants.ModuleConstants;
 
 
 public class RevHexEncoder {
