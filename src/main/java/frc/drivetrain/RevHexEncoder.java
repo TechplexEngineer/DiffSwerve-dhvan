@@ -26,7 +26,7 @@ public class RevHexEncoder {
 
     public double getDistanceDegrees() {
         double currentYawDist = this.yawDistanceAverage.calculate(encoder.getDistance());
-        return frc.bionic.Conversion.normalize(currentYawDist + encoderOffset, -180, 180);
+        return frc.robot.Conversion.normalize(currentYawDist + encoderOffset, -180, 180);
     }
 
     public void setGoalDegrees(double goalDegrees) {
