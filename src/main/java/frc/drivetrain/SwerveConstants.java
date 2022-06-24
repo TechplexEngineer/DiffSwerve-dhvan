@@ -8,18 +8,22 @@ public class SwerveConstants {
         public static final int FRONT_LEFT_MOTOR_A = 1;
         public static final int FRONT_LEFT_MOTOR_B = 2;
         public static final int FRONT_LEFT_ENCODER = 9;
+        public static final double FRONT_LEFT_OFFSET = 0d;
 
         public static final int FRONT_RIGHT_MOTOR_A = 3;
         public static final int FRONT_RIGHT_MOTOR_B = 4;
         public static final int FRONT_RIGHT_ENCODER = 10;
+        public static final double FRONT_RIGHT_OFFSET = 0d;
 
         public static final int BACK_LEFT_MOTOR_A = 5;
         public static final int BACK_LEFT_MOTOR_B = 6;
         public static final int BACK_LEFT_ENCODER = 11;
+        public static final double BACK_LEFT_OFFSET = 0d;
 
         public static final int BACK_RIGHT_MOTOR_A = 7;
         public static final int BACK_RIGHT_MOTOR_B = 8;
         public static final int BACK_RIGHT_ENCODER = 12;
+        public static final double BACK_RIGHT_OFFSET = 0d;
 
         public static final int PIGEON = 13;
 
@@ -28,6 +32,7 @@ public class SwerveConstants {
         public static final double WHEELBASE_METERS = Conversion.inchesToMeters(30);
 
         public static final double MAX_VELOCITY_METERS_PER_SECOND = 10;
+        public static final double MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND = 2;
     }
 
     public static class ModuleConstants{

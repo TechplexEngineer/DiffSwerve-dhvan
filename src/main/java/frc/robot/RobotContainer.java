@@ -4,17 +4,16 @@
 
 package frc.robot;
 
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.drivetrain.Drive;
 import frc.drivetrain.Drivetrain;
-import frc.drivetrain.SwerveConstants;
 import frc.drivetrain.SwerveConstants.DrivetrainConstants;
-import frc.robot.commands.DefaultDriveCommand;
-import frc.robot.subsystems.DrivetrainSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -32,19 +31,20 @@ private final XboxController m_controller = new XboxController(0);
  * The container for the robot. Contains subsystems, OI devices, and commands.
  */
 public RobotContainer() {
-        /**
-         * Set up the default command for the drivetrain.
-         * The controls are for field-oriented driving:
-         * Left stick Y axis -> forward and backwards movement
-         * Left stick X axis -> left and right movement
-         * Right stick X axis -> rotation
-         */
-        m_drivetrain.setDefaultCommand(new Drive(
-                m_drivetrain,
-                () -> -modifyAxis(m_controller.getLeftY()) * DrivetrainConstants.MAX_VELOCITY_METERS_PER_SECOND,
-                () -> -modifyAxis(m_controller.getLeftX()) * DrivetrainConstants.MAX_VELOCITY_METERS_PER_SECOND,
-                () -> -modifyAxis(m_controller.getRightX()) * 1
-        ));
+    /**
+     * Set up the default command for the drivetrain.
+     * The controls are for field-oriented driving:
+     * Left stick Y axis -> forward and backwards movement
+     * Left stick X axis -> left and right movement
+     * Right stick X axis -> rotation
+     */
+    m_drivetrain.setDefaultCommand(new Drive(
+        m_drivetrain,
+        () -> -modifyAxis(m_controller.getY(Hand.kLeft)) * DrivetrainConstants.MAX_VELOCITY_METERS_PER_SECOND,
+        () -> -modifyAxis(m_controller.getX(Hand.kLeft)) * DrivetrainConstants.MAX_VELOCITY_METERS_PER_SECOND,
+        () -> -modifyAxis(m_controller.getX(Hand.kRight)) * DrivetrainConstants.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
+    ));
+
 
         // Configure the button bindings
         configureButtonBindings();
@@ -57,10 +57,10 @@ public RobotContainer() {
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
-    // Back button zeros the gyroscope
-    new Button(m_controller::getBackButton)
-            // No requirements because we don't need to interrupt anything
-            .whenPressed(m_drivetrainSubsystem::zeroGyroscope);
+        // Back button zeros the gyroscope
+        new Button(m_controller::getBackButton)
+                // No requirements because we don't need to interrupt anything
+                .whenPressed(m_drivetrain::zeroGyroscope);
     }
 
     /**
@@ -69,29 +69,29 @@ public RobotContainer() {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return new InstantCommand();
+        // An ExampleCommand will run in autonomous
+        return new InstantCommand();
     }
 
     private static double deadband(double value, double deadband) {
-    if (Math.abs(value) > deadband) {
-        if (value > 0.0) {
-        return (value - deadband) / (1.0 - deadband);
+        if (Math.abs(value) > deadband) {
+            if (value > 0.0) {
+                return (value - deadband) / (1.0 - deadband);
+            } else {
+                return (value + deadband) / (1.0 - deadband);
+            }
         } else {
-        return (value + deadband) / (1.0 - deadband);
+            return 0.0;
         }
-    } else {
-        return 0.0;
-    }
     }
 
     private static double modifyAxis(double value) {
-    // Deadband
-    value = deadband(value, 0.05);
+        // Deadband
+        value = deadband(value, 0.05);
 
-    // Square the axis
-    value = Math.copySign(value * value, value);
+        // Square the axis
+        value = Math.copySign(value * value, value);
 
-    return value;
+        return value;
     }
 }
