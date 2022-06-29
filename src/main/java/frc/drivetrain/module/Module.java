@@ -1,7 +1,5 @@
 package frc.drivetrain.module;
 
-import java.util.Map;
-
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
@@ -9,7 +7,6 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
-import edu.wpi.first.wpilibj.shuffleboard.LayoutType;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -135,6 +132,8 @@ public class Module extends SubsystemBase{
     }
 
     private void updateShuffleBoard(){
-        sb_motorACurrentRPM.setValue(m_motorA.getSelectedSensorVelocity())
+        // TODO Convert from ticks per 100ms to rpm
+        sb_motorACurrentRPM.setValue(m_motorA.getSelectedSensorVelocity());
+        sb_motorACurrentRPM.setValue(m_motorA.getSelectedSensorVelocity());
     }
 }

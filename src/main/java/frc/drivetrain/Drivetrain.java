@@ -48,25 +48,29 @@ public class Drivetrain extends SubsystemBase{
             DrivetrainConstants.FRONT_LEFT_MOTOR_A, 
             DrivetrainConstants.FRONT_LEFT_MOTOR_B, 
             DrivetrainConstants.FRONT_LEFT_ENCODER,
-            DrivetrainConstants.FRONT_LEFT_OFFSET
+            DrivetrainConstants.FRONT_LEFT_OFFSET,
+            "FRONT_LEFT"
         );
 
         frontRightModule = new Module(DrivetrainConstants.FRONT_RIGHT_MOTOR_A, 
             DrivetrainConstants.FRONT_RIGHT_MOTOR_B, 
             DrivetrainConstants.FRONT_RIGHT_ENCODER,
-            DrivetrainConstants.FRONT_RIGHT_OFFSET
+            DrivetrainConstants.FRONT_RIGHT_OFFSET,
+            "FRONT_RIGHT"
         );
 
         backLeftModule = new Module(DrivetrainConstants.BACK_LEFT_MOTOR_A, 
             DrivetrainConstants.BACK_LEFT_MOTOR_B, 
             DrivetrainConstants.BACK_LEFT_ENCODER,
-            DrivetrainConstants.BACK_LEFT_OFFSET
+            DrivetrainConstants.BACK_LEFT_OFFSET,
+            "BACK_LEFT"
         );
 
         backRightModule = new Module(DrivetrainConstants.BACK_RIGHT_MOTOR_A, 
             DrivetrainConstants.BACK_RIGHT_MOTOR_B, 
             DrivetrainConstants.BACK_RIGHT_ENCODER,
-            DrivetrainConstants.BACK_RIGHT_OFFSET
+            DrivetrainConstants.BACK_RIGHT_OFFSET,
+            "BACK_RIGHT"
         );
 
         m_pigeon = new PigeonIMU(DrivetrainConstants.PIGEON);
