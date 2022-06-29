@@ -6,23 +6,21 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import java.util.function.DoubleSupplier;
 
 public class Drive extends CommandBase{
-    private final Drivetrain m_drivetrain;
+    private final Drivetrain m_drivetrain = Drivetrain.getInstance();
 
     private final DoubleSupplier m_translationXSupplier;
     private final DoubleSupplier m_translationYSupplier;
     private final DoubleSupplier m_rotationSupplier;
 
-    public Drive(Drivetrain drivetrainSubsystem,
-                               DoubleSupplier translationXSupplier,
-                               DoubleSupplier translationYSupplier,
-                               DoubleSupplier rotationSupplier) {
+    public Drive(DoubleSupplier translationXSupplier,
+                    DoubleSupplier translationYSupplier,
+                    DoubleSupplier rotationSupplier) {
 
-        this.m_drivetrain = drivetrainSubsystem;
         this.m_translationXSupplier = translationXSupplier;
         this.m_translationYSupplier = translationYSupplier;
         this.m_rotationSupplier = rotationSupplier;
 
-        addRequirements(drivetrainSubsystem);
+        addRequirements(m_drivetrain);
     }
 
     @Override

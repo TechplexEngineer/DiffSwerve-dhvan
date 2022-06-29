@@ -22,29 +22,26 @@ import frc.drivetrain.SwerveConstants.DrivetrainConstants;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-// The robot's subsystems and commands are defined here...
-private final Drivetrain m_drivetrain = Drivetrain.getInstance();
+    // The robot's subsystems and commands are defined here...
+    private final Drivetrain m_drivetrain = Drivetrain.getInstance();
 
-private final XboxController m_controller = new XboxController(0);
+    private final XboxController m_controller = new XboxController(0);
 
-/**
- * The container for the robot. Contains subsystems, OI devices, and commands.
- */
-public RobotContainer() {
     /**
-     * Set up the default command for the drivetrain.
-     * The controls are for field-oriented driving:
-     * Left stick Y axis -> forward and backwards movement
-     * Left stick X axis -> left and right movement
-     * Right stick X axis -> rotation
+     * The container for the robot. Contains subsystems, OI devices, and commands.
      */
-    m_drivetrain.setDefaultCommand(new Drive(
-        m_drivetrain,
-        () -> -modifyAxis(m_controller.getY(Hand.kLeft)) * DrivetrainConstants.MAX_VELOCITY_METERS_PER_SECOND,
-        () -> -modifyAxis(m_controller.getX(Hand.kLeft)) * DrivetrainConstants.MAX_VELOCITY_METERS_PER_SECOND,
-        () -> -modifyAxis(m_controller.getX(Hand.kRight)) * DrivetrainConstants.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
-    ));
-
+    public RobotContainer() {
+        /**
+         * Set up the default command for the drivetrain.
+         * The controls are for field-oriented driving:
+         * Left stick Y axis -> forward and backwards movement
+         * Left stick X axis -> left and right movement
+         * Right stick X axis -> rotation
+         */
+        m_drivetrain.setDefaultCommand(new Drive(
+            () -> -modifyAxis(m_controller.getY(Hand.kLeft)) * DrivetrainConstants.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> -modifyAxis(m_controller.getX(Hand.kLeft)) * DrivetrainConstants.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> -modifyAxis(m_controller.getX(Hand.kRight)) * DrivetrainConstants.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND));
 
         // Configure the button bindings
         configureButtonBindings();

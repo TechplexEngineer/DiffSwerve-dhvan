@@ -2,9 +2,9 @@ package frc.drivetrain.module;
 
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
-
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -81,6 +81,9 @@ public class Module extends SubsystemBase{
      * Takes a SwerveModuleState, and sets RPM values to the motor based off of the Yaw and Translation RPMS
      */
     public void setModuleState(SwerveModuleState state){
+        // to go backwards, it'll invert the translation RPM, and not spint 180 degreees
+        // Minimizes the amount of movement that a module would move (i.e. if the module needs )
+        state = SwerveModuleState.optimize(state, Rotation2d.fromDegrees(m_yawEncoder.getDistanceDegrees()));
         // The desired translation RPM from the SwerveModuleState
         double desiredTRPM = Conversion.mpsToRpm(state.speedMetersPerSecond, ModuleConstants.WHEEL_DIAMETER_METERS);
         // The desired yaw RPM from the SwerveModuleState
@@ -102,15 +105,6 @@ public class Module extends SubsystemBase{
     @Override
     public void periodic() {
         
-    }
-    
-    /**
-     * Returns the instance of the current module
-     * @throws Exception if the instance does not exist yet
-     */
-    public Module getInstance() throws Exception{
-        if(m_instance == null) throw new NullPointerException("Drivetrain instance does not exist");
-        else return m_instance;
     }
 
     // Shuffleboard
