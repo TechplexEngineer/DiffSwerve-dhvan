@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.drivetrain.SwerveConstants.DrivetrainConstants;
@@ -29,8 +30,6 @@ public class Drivetrain extends SubsystemBase{
     // Instance of the Drivetrain class, used so that only one instance is being passed around different classes
     private static Drivetrain m_instance;
 
-    // TODO add odometery
-
     private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
             // Front left
             new Translation2d(DrivetrainConstants.TRACKWIDTH_METERS / 2.0, DrivetrainConstants.WHEELBASE_METERS / 2.0),
@@ -41,6 +40,8 @@ public class Drivetrain extends SubsystemBase{
             // Back right
             new Translation2d(-DrivetrainConstants.TRACKWIDTH_METERS / 2.0, -DrivetrainConstants.WHEELBASE_METERS / 2.0)
     );
+
+    private final SwerveDriveOdometry m_odometry;
 
     private Drivetrain(){
         frontLeftModule = new Module(
@@ -69,6 +70,8 @@ public class Drivetrain extends SubsystemBase{
         );
 
         m_pigeon = new PigeonIMU(DrivetrainConstants.PIGEON);
+
+        m_odometry = new SwerveDriveOdometry(m_kinematics, getGyroscopeRotation());
     }
 
     @Override
@@ -80,6 +83,9 @@ public class Drivetrain extends SubsystemBase{
 
         // Sets the state of each module
         actuateModules(states);
+
+        // Updates the odometry with the current swerve module states and gyroscope rotation
+        m_odometry.update(getGyroscopeRotation(), states);
     }
 
     /*
@@ -103,7 +109,7 @@ public class Drivetrain extends SubsystemBase{
     }
 
     /*
-     * Sets the states from the SwerveModuleStates array to each individual modules
+     * Sets the states from the SwerveModuleStates array to each individual module
      */
     private void actuateModules(SwerveModuleState[] states){
         frontLeftModule.setModuleState(states[0]);
